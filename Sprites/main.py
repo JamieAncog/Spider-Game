@@ -2,14 +2,15 @@ import pygame
 
 pygame.init()
 
-init_x = 40
 in_play = True
 win_width = 852
 win_height = 480
+border = 50
 win = pygame.display.set_mode((win_width, win_height))
 pygame.display.set_caption("Timing Game")
 bg = pygame.image.load("sky3.jpg")
 obstacle = pygame.image.load("smasher.png")
+portal = pygame.image.load("portal.png")
 walkRight = [pygame.image.load("run_right1.png"), pygame.image.load("run_right0.png"),
              pygame.image.load("run_right2.png")]
 
@@ -60,31 +61,31 @@ class Obstacle:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
 
-class Entrance:
+class Portal:
 
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.image = obstacle
-        self.rise = True
-        self.fall = False
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.image = portal
 
     def draw(self, window):
         window.blit(self.image, (self.x, self.y))
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
 
-bunny = Player(init_x, 305, 47, 116, 20)
-smasher = Obstacle(500, -10, 148, 431, -10, -220, 15)
+left_portal = Portal(win_width-border-59, 300, 59, 117)
+right_portal = Portal(border, 300, 59, 117)
+bunny = Player(border + left_portal.width/2, 305, 47, 116, 20)
+smasher = Obstacle(450, -10, 148, 431, -10, -220, 15)
 
 
 def redraw_game_window():
     win.blit(bg, (0, 0))
     bunny.draw(win)
     smasher.draw(win)
+    left_portal.draw(win)
+    right_portal.draw(win)
     pygame.display.update()
 
 
@@ -99,11 +100,11 @@ while run:
     keys = pygame.key.get_pressed()
 
     if keys[pygame.K_RIGHT]:
-        if bunny.x < win_width - bunny.width - bunny.vel:
+        if bunny.x < win_width - 50 - right_portal.width/2 - bunny.width - bunny.vel:
             bunny.x += bunny.vel
             bunny.right = True
         else:
-            bunny.x = 0
+            bunny.x = border + left_portal.width/2
     else:
         bunny.right = False
         bunny.walkCount = 0
