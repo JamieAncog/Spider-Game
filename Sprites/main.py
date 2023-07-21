@@ -2,6 +2,7 @@ import pygame
 
 pygame.init()
 
+init_x = 40
 win = pygame.display.set_mode((852, 480))
 pygame.display.set_caption("Timing Game")
 bg = pygame.image.load("sky3.jpg")
@@ -30,7 +31,7 @@ class Player:
             window.blit(walkRight[1], (self.x, self.y))
 
 
-bunny = Player(10, 305, 57, 105)
+bunny = Player(init_x, 305, 42, 105)
 
 
 def redraw_game_window():
@@ -53,6 +54,8 @@ while run:
         if bunny.x < 852 - bunny.width - bunny.vel:
             bunny.x += bunny.vel
             bunny.right = True
+        else:
+            bunny.x = 0
     else:
         bunny.right = False
         bunny.walkCount = 0
