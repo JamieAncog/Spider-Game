@@ -78,6 +78,7 @@ class Obstacle:
     def __init__(self, x, width, height, max_y, min_y, vel, acc):
         self.x = x
         self.width = width
+        self.score_width = width - 82
         self.height = height
         self.y = min_y
         self.max_y = max_y
@@ -87,7 +88,7 @@ class Obstacle:
         self.image = obstacle
         self.rise = True
         self.fall = False
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.rect = pygame.Rect(self.x + 41, self.y, self.score_width, self.height)
 
     def move_char(self, w_width, char):
 
@@ -119,14 +120,14 @@ class Obstacle:
 
     def draw(self, window):
         window.blit(self.image, (self.x, self.y))
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.rect = pygame.Rect(self.x + 41, self.y, self.score_width, self.height)
 
 
 spider = Player(win_width/4 - 47/2, win_height - ground_height + 10, 92, 74, 40)
 title = GameText(love_font, (0, 0, 0), "Jamie's Spider Game", border)
 
 for n in range(num_smashers):
-    new_smasher = Obstacle(-win_width + spider.vel + (win_width * 2 / num_smashers) * n, 148, 431, -25, -240, 15, 10)
+    new_smasher = Obstacle(-win_width + spider.vel + (win_width * 2 / num_smashers) * n, 215, 431, -25, -240, 15, 10)
     smashers.append(new_smasher)
 
 count = num_smashers - 1
@@ -176,7 +177,7 @@ while run:
         for smasher in smashers:
             smasher.move_char(win_width, spider)
 
-        if curr_obstacle.x == spider.vel:
+        if curr_obstacle.x == 0:
             title.score += 1
             count += 1
             curr_obstacle = smashers[count % num_smashers]
