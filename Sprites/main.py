@@ -161,7 +161,7 @@ while run:
     if game_over:
         in_play = False
         win.blit(bg, (0, 0))
-        win.blit(floor, (0, win_height - 90))
+        win.blit(floor, (0, win_height - ground_height))
         win.blit(spider.image, (spider.x, spider.y))
         for smasher in smashers:
             win.blit(smasher.image, (smasher.x, smasher.y))
