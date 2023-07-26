@@ -40,7 +40,7 @@ class GameText:
         score_text_rect.center = (text_rect.width / 2 + self.text_border, self.text_border + text_rect.height)
         speed_text = self.font.render('Speed: ' + str(speed) + ' pixels', True, self.color)
         speed_text_rect = text.get_rect()
-        speed_text_rect.center = (text_rect.width / 2 + self.text_border, self.text_border + text_rect.height * 2)
+        speed_text_rect.center = (text_rect.width / 2 + self.text_border, self.text_border + score_text_rect.height * 2)
         window.blit(text, text_rect)
         window.blit(score_text, score_text_rect)
         window.blit(speed_text, speed_text_rect)
@@ -50,20 +50,20 @@ class Player:
 
     def __init__(self, x, y, width, height, vel):
         self.x = x
-        self.y = y - height
+        self.y = y
         self.width = width
         self.height = height
         self.vel = vel
-        self.right = False
+        self.move = False
         self.walkCount = 0
         self.image = walkRight[1]
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.rect = pygame.Rect(x, y, width, height)
 
     def draw(self, window):
-        if self.walkCount + 1 >= 27:
+        if self.walkCount >= 27:
             self.walkCount = 0
 
-        if self.right:
+        if self.move:
             self.image = walkRight[self.walkCount % 3]
             self.walkCount += 1
         else:
@@ -94,7 +94,7 @@ class Obstacle:
 
         if self.x > -w_width:
             self.x -= char.vel
-            char.right = True
+            char.move = True
         else:
             self.x = win_width
             self.vel += self.acc
@@ -119,11 +119,11 @@ class Obstacle:
             self.y += fall_inc
 
     def draw(self, window):
-        window.blit(self.image, (self.x, self.y))
         self.rect = pygame.Rect(self.x + 41, self.y, self.score_width, self.height)
+        window.blit(self.image, (self.x, self.y))
 
 
-spider = Player(win_width/4 - 47/2, win_height - ground_height + 10, 92, 74, 40)
+spider = Player(win_width/4 - 47/2, win_height - ground_height - 64, 92, 74, 40)
 title = GameText(love_font, (0, 0, 0), "Jamie's Spider Game", border)
 
 for n in range(num_smashers):
@@ -183,7 +183,7 @@ while run:
             curr_obstacle = smashers[count % num_smashers]
 
     else:
-        spider.right = False
+        spider.move = False
         spider.walkCount = 0
 
     if in_play:
@@ -191,7 +191,6 @@ while run:
         for smasher in smashers:
             smasher.crush(ground)
 
-    if in_play:
         redraw_game_window()
 
 pygame.quit()
