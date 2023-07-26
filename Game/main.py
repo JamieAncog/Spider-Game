@@ -18,7 +18,7 @@ floor = pygame.image.load("ground.png")
 game_over_screen = pygame.image.load("game_over_screen.png")
 walkRight = [pygame.image.load("spider1.png"), pygame.image.load("spider0.png"),
              pygame.image.load("spider2.png")]
-love_font = pygame.font.Font('Love.ttf', 20)
+love_font = pygame.font.Font("Love.ttf", 20)
 smashers = []
 
 
@@ -127,7 +127,7 @@ spider = Player(win_width/4 - 47/2, win_height - ground_height + 10, 92, 74, 40)
 title = GameText(love_font, (0, 0, 0), "Jamie's Spider Game", border)
 
 for n in range(num_smashers):
-    new_smasher = Obstacle(-win_width + spider.vel + (win_width * 2 / num_smashers) * n, 215, 431, -25, -240, 15, 10)
+    new_smasher = Obstacle(-win_width + (win_width * 2 / num_smashers) * n, 215, 431, -25, -240, 15, 10)
     smashers.append(new_smasher)
 
 count = num_smashers - 1
